@@ -1,0 +1,12 @@
+Va 10 8
+Vb 9 1
+Vc 7 8
+Vd 6 1
+Ve 4 5
+Vf 2 3
+Ra 3 10
+Rb 8 9
+Rc 5 7
+Rd 5 6
+Re 3 4
+Rf 1 2

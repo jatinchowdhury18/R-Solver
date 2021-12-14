@@ -6,57 +6,40 @@
 # - Allow one port to be adapted
 # - Add support for VCVS and Resistive VCVS elements
 
-from sage.all import *
 import argparse
-from r_solver_utils import stamp_element, parse_netlist, shape, print_matrix
+from r_solver_utils.parse_netlist import parse_netlist
+from r_solver_utils.matrix_helpers import compute_S_matrix, construct_X_matrix, remove_datum_node
+from r_solver_utils.print_helpers import print_matrix, print_shape
 
 def main(args):
     elements, num_nodes, num_ports = parse_netlist(args.netlist)
-
-    X_mat = matrix(SR, num_nodes + num_ports, num_nodes + num_ports)
-
-    for el in elements:
-        X_mat = stamp_element(X_mat, el, num_nodes, num_ports)
-
+    
+    X_mat = construct_X_matrix(elements, num_nodes, num_ports)
     if args.verbose:
         print('Original X matrix:')
         print(X_mat)
-        print(shape(X_mat))
+        print_shape(X_mat)
 
-    datum = int(args.datum)
-    matrix_range = [x for x in range(num_nodes + num_ports) if x != datum]
-    X_mat = matrix(X_mat[matrix_range, matrix_range])
-
+    X_mat = remove_datum_node(X_mat, int(args.datum))
     if args.verbose:
         print('')
         print('X matrix after removing datum node:')
         print(X_mat)
-        print(shape(X_mat))
+        print_shape(X_mat)
 
     X_inv = X_mat.inverse().simplify_rational()
     if args.verbose:
         print('')
         print('X matrix inverse:')
         print(X_inv)
-        print(shape(X_inv))
+        print_shape(X_inv)
 
-    vert_id = matrix(SR, X_mat.nrows(), num_ports)
-    vert_id[-num_ports:, :] = identity_matrix(num_ports)
-
-    hor_id = matrix(SR, num_ports, X_mat.ncols())
-    hor_id[:, -num_ports:] = identity_matrix(num_ports)
-
-    Rp_diag = matrix(SR, num_ports, num_ports)
-    for el in elements:
-        if el.type == 'Res':
-            Rp_diag[el.port, el.port] = el.impedance
-
-    Scattering_mat = identity_matrix(num_ports) + 2 * Rp_diag * hor_id * X_inv * vert_id
-    # Scattering_mat = Scattering_mat.simplify()
+    Scattering_mat = compute_S_matrix(X_inv, elements, num_ports)
 
     print('')
     print('Scattering matrix:')
     print_matrix(Scattering_mat, args.out_file, num_ports)
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Derive the R-type scattering matrix for a given circuit.')

@@ -8,30 +8,22 @@
 import argparse
 from r_solver_utils.parse_netlist import parse_netlist
 from r_solver_utils.matrix_helpers import adapt_port, compute_S_matrix, construct_X_matrix, remove_datum_node
-from r_solver_utils.print_helpers import print_matrix, print_shape
+from r_solver_utils.print_helpers import print_matrix, print_shape, verbose_print
 
 def main(args):
     elements, num_nodes, num_ports = parse_netlist(args.netlist)
     
     X_mat = construct_X_matrix(elements, num_nodes, num_ports)
     if args.verbose:
-        print('Original X matrix:')
-        print(X_mat)
-        print_shape(X_mat)
+        verbose_print(X_mat, 'Original X matrix:')
 
     X_mat = remove_datum_node(X_mat, int(args.datum))
     if args.verbose:
-        print('')
-        print('X matrix after removing datum node:')
-        print(X_mat)
-        print_shape(X_mat)
+        verbose_print(X_mat, 'X matrix after removing datum node:')
 
     X_inv = X_mat.inverse().simplify_rational() # simplify_rational() is faster than simplify_full(), and seems to give the same answer!
     if args.verbose:
-        print('')
-        print('X matrix inverse:')
-        print(X_inv)
-        print_shape(X_inv)
+        verbose_print(X_inv, 'X matrix inverse:')
 
     Scattering_mat, Rp = compute_S_matrix(X_inv, elements, num_ports)
 

@@ -30,3 +30,9 @@ def print_matrix(M, out_file, num_ports):
 def print_shape(M):
     '''Prints the shape of a Sage matrix'''
     print((M.nrows(), M.ncols()))
+
+def verbose_print(mat, name):
+    print('')
+    print(name)
+    print(mat)
+    print_shape(mat)

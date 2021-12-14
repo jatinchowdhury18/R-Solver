@@ -12,6 +12,8 @@ this repository.
 In order to use this script, you must have the
 [Sage](https://www.sagemath.org/) software system
 installed. From there, you can run the `r_solver.py`
-script to generate a scattering matrix for a given
+script using the command
+`/usr/bin/env sage -python r_solver.py my_netlist.txt`,
+to generate a scattering matrix for a given
 netlist. For more options, use `r_solver.py --help`.
 

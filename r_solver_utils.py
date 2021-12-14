@@ -1,5 +1,6 @@
 from sage.all import *
 from collections import namedtuple
+import subprocess, sys
 
 Element = namedtuple('Element', ['type', 'node1', 'node2', 'impedance', 'admittance', 'port'])
 
@@ -45,14 +46,21 @@ def stamp_resistor(X_matrix, resistor):
 
     return X_matrix
 
-def print_matrix(M, out_file):
+def print_matrix(M, out_file, num_ports):
+    args = subprocess.list2cmdline(sys.argv[:])
+    comments = '// This scattering matrix was derived using the R-Solver python script (https://github.com/jatinchowdhury18/R-Solver),\n'
+    comments += '// invoked with command: ' + args + '\n'
+    prefix = f'const auto S_matrix[{num_ports}][{num_ports}] = {{'
+    empty_prefix = ' ' * len(prefix)
+    
     M_strs = M.str(rep_mapping=lambda a: str(a) + ',')
-    M_strs = M_strs.replace('[', '{').replace(',]', '},')
-    M_strs = '{' + M_strs[:-1] + '};'
-    print(M_strs)
+    M_strs = M_strs.replace('[', empty_prefix + '{').replace(',]', '},')
+    M_strs = comments + prefix + M_strs[len(prefix):-1] + '};'
 
     if out_file is not None:
         out_file.write(M_strs)
+    else:
+        print(M_strs)
 
 def shape(M):
     return (M.nrows(), M.ncols())

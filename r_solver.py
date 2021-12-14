@@ -56,7 +56,7 @@ def main(args):
 
     print('')
     print('Scattering matrix:')
-    print_matrix(Scattering_mat, args.out_file)
+    print_matrix(Scattering_mat, args.out_file, num_ports)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Derive the R-type scattering matrix for a given circuit.')

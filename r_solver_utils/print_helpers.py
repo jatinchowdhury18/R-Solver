@@ -25,6 +25,8 @@ def print_matrix(M, out_file, num_ports):
     if out_file is not None:
         out_file.write(M_strs)
     else:
+        print('')
+        print('Scattering matrix:')
         print(M_strs)
 
 def print_shape(M):

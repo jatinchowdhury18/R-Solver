@@ -31,8 +31,6 @@ def main(args):
     if port_to_adapt <= 0:
         Scattering_mat = adapt_port(Scattering_mat, Rp, port_to_adapt)
 
-    print('')
-    print('Scattering matrix:')
     print_matrix(Scattering_mat, args.out_file, num_ports)
 
 

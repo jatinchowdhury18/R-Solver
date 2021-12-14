@@ -42,6 +42,11 @@ def adapt_port(S_mat, Rp, port):
 
     S_nn = S_mat[port, port]
     R_n = Rp[port, port]
-    R_n_solved = solve(S_nn == 0, R_n)[0].right()
+    R_n_solve_expr = solve(S_nn == 0, R_n)[0]
+    R_n_solved = R_n_solve_expr.right()
+
+    print('')
+    print('Adapted Port Impedance:')
+    print(R_n_solve_expr)
 
     return S_mat.substitute({R_n: R_n_solved}).simplify_full()

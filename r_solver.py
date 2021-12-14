@@ -28,7 +28,7 @@ def main(args):
     Scattering_mat, Rp = compute_S_matrix(X_inv, elements, num_ports)
 
     port_to_adapt = int(args.adapted_port)
-    if port_to_adapt <= 0:
+    if port_to_adapt >= 0:
         Scattering_mat = adapt_port(Scattering_mat, Rp, port_to_adapt)
 
     print_matrix(Scattering_mat, args.out_file, num_ports)

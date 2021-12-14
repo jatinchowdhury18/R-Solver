@@ -21,15 +21,13 @@ def parse_netlist(file):
         
         parts = l.split(' ')
         el_impedance = parts[0]
-        el_admittance = el_impedance.replace('R', 'G')
-        
         el_node1 = int(parts[1])
         el_node2 = int(parts[2])
 
         num_nodes = max(num_nodes, el_node1, el_node2)
 
         elements.append(Element(type=el_type, node1=el_node1 - 1, node2=el_node2 - 1,
-                        impedance=var(el_impedance), admittance=var(el_admittance), port=port))
+                        impedance=var(el_impedance), port=port))
         
     assert(num_resistors == num_voltages)
     num_ports = num_voltages

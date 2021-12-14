@@ -27,7 +27,7 @@ def main(args):
         print(X_mat)
         print_shape(X_mat)
 
-    X_inv = X_mat.inverse().simplify_rational()
+    X_inv = X_mat.inverse().simplify_rational() # simplify_rational() is faster than simplify_full(), and seems to give the same answer!
     if args.verbose:
         print('')
         print('X matrix inverse:')

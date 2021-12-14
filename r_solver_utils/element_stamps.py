@@ -1,10 +1,10 @@
 from r_solver_utils.element import RES_TYPE, VOLTAGE_TYPE
 
 def stamp_resistor(X_matrix, resistor):
-    X_matrix[resistor.node1, resistor.node1] += resistor.admittance
-    X_matrix[resistor.node2, resistor.node2] += resistor.admittance
-    X_matrix[resistor.node1, resistor.node2] -= resistor.admittance
-    X_matrix[resistor.node2, resistor.node1] -= resistor.admittance
+    X_matrix[resistor.node1, resistor.node1] += 1 / resistor.impedance
+    X_matrix[resistor.node2, resistor.node2] += 1 / resistor.impedance
+    X_matrix[resistor.node1, resistor.node2] -= 1 / resistor.impedance
+    X_matrix[resistor.node2, resistor.node1] -= 1 / resistor.impedance
 
     return X_matrix
 

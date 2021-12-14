@@ -17,3 +17,8 @@ script using the command
 to generate a scattering matrix for a given
 netlist. For more options, use `r_solver.py --help`.
 
+## Netlist Format
+The format for the input netlists can be seen in the
+example netlists provided in the `netlists/` directory.
+One important thing to note, is that all resistors must
+be given a 2-character label, e.g. 'Ra'.

@@ -1,14 +1,13 @@
 # Simple script for generating R-type adaptors.
 # The resulting Scattring matrics will be in terms
-# of both port impedance (Rp) and admittance (Gp = 1/Rp)
+# of the port impedance (Rp).
 #
-# There's still a lot of work to do with this script, starting with:
-# - Allow one port to be adapted
-# - Add support for VCVS and Resistive VCVS elements
+# There's still a lot of work to do with this script, starting
+# with adding support for VCVS and Resistive VCVS elements
 
 import argparse
 from r_solver_utils.parse_netlist import parse_netlist
-from r_solver_utils.matrix_helpers import compute_S_matrix, construct_X_matrix, remove_datum_node
+from r_solver_utils.matrix_helpers import adapt_port, compute_S_matrix, construct_X_matrix, remove_datum_node
 from r_solver_utils.print_helpers import print_matrix, print_shape
 
 def main(args):
@@ -34,7 +33,11 @@ def main(args):
         print(X_inv)
         print_shape(X_inv)
 
-    Scattering_mat = compute_S_matrix(X_inv, elements, num_ports)
+    Scattering_mat, Rp = compute_S_matrix(X_inv, elements, num_ports)
+
+    port_to_adapt = int(args.adapted_port)
+    if port_to_adapt <= 0:
+        Scattering_mat = adapt_port(Scattering_mat, Rp, port_to_adapt)
 
     print('')
     print('Scattering matrix:')
@@ -49,6 +52,9 @@ if __name__ == "__main__":
 
     parser.add_argument('--datum', dest='datum', default=0,
                         help='The \"datum\" node to remove from the MNA matrix')
+
+    parser.add_argument('--adapt', dest='adapted_port', default=-1,
+                        help='Specify a port index to adapt. If this argument is not specified, no port will be adapted. Note that indexing starts at 0.')
 
     parser.add_argument('--out', dest='out_file', type=argparse.FileType('w'), default=None,
                         help='Output file to write the scattering matrix to')

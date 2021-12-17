@@ -11,9 +11,9 @@ from r_solver_utils.matrix_helpers import adapt_port, compute_S_matrix, construc
 from r_solver_utils.print_helpers import print_matrix, print_shape, verbose_print
 
 def main(args):
-    elements, num_nodes, num_ports = parse_netlist(args.netlist)
+    elements, num_nodes, num_ports, num_extras = parse_netlist(args.netlist)
     
-    X_mat = construct_X_matrix(elements, num_nodes, num_ports)
+    X_mat = construct_X_matrix(elements, num_nodes, num_ports, num_extras)
     if args.verbose:
         verbose_print(X_mat, 'Original X matrix:')
 
@@ -21,16 +21,17 @@ def main(args):
     if args.verbose:
         verbose_print(X_mat, 'X matrix after removing datum node:')
 
-    X_inv = X_mat.inverse().simplify_rational() # simplify_rational() is faster than simplify_full(), and seems to give the same answer!
+    X_inv = X_mat.inverse() #.simplify_rational() # simplify_rational() is faster than simplify_full(), and seems to give the same answer!
     if args.verbose:
         verbose_print(X_inv, 'X matrix inverse:')
 
-    Scattering_mat, Rp = compute_S_matrix(X_inv, elements, num_ports)
+    Scattering_mat, Rp = compute_S_matrix(X_inv, elements, num_ports, num_extras)
 
     port_to_adapt = int(args.adapted_port)
     if port_to_adapt >= 0:
         Scattering_mat = adapt_port(Scattering_mat, Rp, port_to_adapt)
 
+    print('DONE!')
     print_matrix(Scattering_mat, args.out_file, num_ports)
 
 

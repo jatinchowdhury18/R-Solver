@@ -1,0 +1,9 @@
+Va 8 3 V
+Vb 6 1 V
+Vc 5 1 V
+Vd 7 1 V
+Ra 4 8 Ra
+Rb 2 6 Rb
+Rc 3 5 Rc
+Rd 4 7 Rd
+E1 2 3 4 1 A

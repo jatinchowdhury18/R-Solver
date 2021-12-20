@@ -56,4 +56,4 @@ def adapt_port(S_mat, Rp, port):
     print('Adapted Port Impedance:')
     print(R_n_solve_expr)
 
-    return S_mat.substitute({R_n: R_n_solved}).simplify_rational()
+    return S_mat.substitute({R_n: R_n_solved})

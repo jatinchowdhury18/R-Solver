@@ -30,6 +30,8 @@ def main(args):
     port_to_adapt = int(args.adapted_port)
     if port_to_adapt >= 0:
         Scattering_mat = adapt_port(Scattering_mat, Rp, port_to_adapt)
+    
+    Scattering_mat = Scattering_mat.simplify_rational()
 
     print('DONE!')
     print_matrix(Scattering_mat, args.out_file, num_ports)

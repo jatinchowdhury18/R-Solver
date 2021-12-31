@@ -21,7 +21,7 @@ def main(args):
     if args.verbose:
         verbose_print(X_mat, 'X matrix after removing datum node:')
 
-    X_inv = X_mat.inverse() #.simplify_rational() # simplify_rational() is faster than simplify_full(), and seems to give the same answer!
+    X_inv = X_mat.inverse()
     if args.verbose:
         verbose_print(X_inv, 'X matrix inverse:')
 
@@ -31,7 +31,7 @@ def main(args):
     if port_to_adapt >= 0:
         Scattering_mat = adapt_port(Scattering_mat, Rp, port_to_adapt)
     
-    Scattering_mat = Scattering_mat.simplify_rational()
+    Scattering_mat = Scattering_mat.simplify_rational() # simplify_rational() is faster than simplify_full(), and seems to give the same answer.
 
     print('DONE!')
     print_matrix(Scattering_mat, args.out_file, num_ports)
@@ -44,7 +44,7 @@ if __name__ == "__main__":
                         help='The netlist to construct the matrix for')
 
     parser.add_argument('--datum', dest='datum', default=0,
-                        help='The \"datum\" node to remove from the MNA matrix')
+                        help='The \"datum\" node to remove from the MNA matrix. Note that indexing starts at 0.')
 
     parser.add_argument('--adapt', dest='adapted_port', default=-1,
                         help='Specify a port index to adapt. If this argument is not specified, no port will be adapted. Note that indexing starts at 0.')

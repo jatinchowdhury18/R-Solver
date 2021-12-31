@@ -21,7 +21,7 @@ def remove_datum_node(X_mat, datum):
 
 def compute_S_matrix(X_inv, elements, num_ports, num_extras):
     start_ports = -(num_ports + num_extras)
-    end_ports = -num_extras
+    end_ports = -num_extras if num_extras > 0 else X_inv.ncols()
 
     vert_id = matrix(SR, X_inv.nrows(), num_ports)
     vert_id[start_ports:end_ports, :] = identity_matrix(num_ports)

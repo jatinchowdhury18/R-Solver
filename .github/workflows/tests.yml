@@ -1,0 +1,44 @@
+name: Tests
+
+on:
+  push:
+    branches:
+    - main
+    - develop
+    - ci-*
+  pull_request:
+    branches:
+    - main
+    - develop
+
+  workflow_dispatch:
+
+jobs:
+  build_and_test:
+    if: contains(toJson(github.event.commits), '***NO_CI***') == false && contains(toJson(github.event.commits), '[ci skip]') == false && contains(toJson(github.event.commits), '[skip ci]') == false
+    name: Run R-Solver tests
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Install Sage (Linux)
+        run: |
+          sudo apt-get update
+          sudo apt install sagemath
+
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Test Bassman Unadapted
+        run: |
+          /usr/bin/env sage -python r_solver.py --out bassman_uscatt.txt netlists/bassman.txt
+          cmp -s bassman_uscatt.txt test_outputs/bassman_uscatt.txt
+
+      - name: Test Baxandall Adapted
+        run: |
+          /usr/bin/env sage -python r_solver.py --datum 0 --adapt 5 --out baxandall_scatt.txt netlists/baxandall.txt
+          cmp -s baxandall_scatt.txt test_outputs/baxandall_scatt.txt
+
+      - name: Test MXR Distortion+ Adapted
+        run: |
+          /usr/bin/env sage -python r_solver.py --datum 0 --adapt 3 --out mxr_scatt.txt netlists/mxr_distplus_vcvs.txt
+          cmp -s mxr_scatt.txt test_outputs/mxr_scatt.txt

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+    <h1>Wave Digital Filter R-Type Solver</h1>
+    <p>
+        Other links:
+        <a href="https://github.com/jatinchowdhury18/R-Solver">GitHub</a><br>
+    </p>
+    <h2>Upload a netlist to solve:</h2>
+    <form action="/upload_netlist" method="POST" enctype="multipart/form-data">
+        <input type="file" name="file"/>
+        <input type="submit" value="Upload"/>
+    </form>
+    <br></br>
+    <h2>Select parameters:</h2>
+    <p>Netlist file: {{ netlist_file }}</p>
+    <form action="/solve" method="POST" enctype="multipart/form-data">
+        <label>Datum Node:</label>
+        <input name="datum", value="0">
+        <br></br>
+        <label>Adapted Port:</label>
+        <input name="adapt", value="-1">
+        <br></br>
+        <input type="submit" value="Solve"/>
+    </form>
+    <br></br>
+    <h2>Download scattering matrix:</h2>
+    <p>Scattering Matrix file: {{ scatt_file }}</p>
+    <form action="/download">
+        <input type="submit" value="Download"/>
+    </form>
+</body>
+</html>

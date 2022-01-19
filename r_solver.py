@@ -1,16 +1,13 @@
 # Simple script for generating R-type adaptors.
 # The resulting Scattring matrics will be in terms
 # of the port impedance (Rp).
-#
-# There's still a lot of work to do with this script, starting
-# with adding support for VCVS and Resistive VCVS elements
 
 import argparse
 from r_solver_utils.parse_netlist import parse_netlist
 from r_solver_utils.matrix_helpers import adapt_port, compute_S_matrix, construct_X_matrix, remove_datum_node
 from r_solver_utils.print_helpers import print_matrix, print_shape, verbose_print
 
-def main(args):
+def main(args, custom_args=False):
     elements, num_nodes, num_ports, num_extras = parse_netlist(args.netlist)
     
     X_mat = construct_X_matrix(elements, num_nodes, num_ports, num_extras)
@@ -28,13 +25,14 @@ def main(args):
     Scattering_mat, Rp = compute_S_matrix(X_inv, elements, num_ports, num_extras)
 
     port_to_adapt = int(args.adapted_port)
+    adapt_expr = None
     if port_to_adapt >= 0:
-        Scattering_mat = adapt_port(Scattering_mat, Rp, port_to_adapt)
+        Scattering_mat, adapt_expr = adapt_port(Scattering_mat, Rp, port_to_adapt)
     
     Scattering_mat = Scattering_mat.simplify_rational() # simplify_rational() is faster than simplify_full(), and seems to give the same answer.
 
     print('DONE!')
-    print_matrix(Scattering_mat, args.out_file, num_ports)
+    print_matrix(Scattering_mat, args.out_file, num_ports, adapt_expr, args, custom_args)
 
 
 if __name__ == "__main__":

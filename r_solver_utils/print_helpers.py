@@ -1,10 +1,21 @@
 import subprocess, sys, re
 
-def print_matrix(M, out_file, num_ports):
+def print_matrix(M, out_file, num_ports, adapt_expr, args, custom_args):
     '''Prints a Sage matrix as a C-style 2D array'''
-    args = subprocess.list2cmdline(sys.argv[:])
+    
     comments = '// This scattering matrix was derived using the R-Solver python script (https://github.com/jatinchowdhury18/R-Solver),\n'
-    comments += '// invoked with command: ' + args + '\n'
+
+    if custom_args:
+        args_str = 'r_solver.py '
+        args_str += f'--datum {args.datum} '
+        args_str += f'--adapt {args.adapted_port} '
+        args_str += f'--verbose {args.verbose} '
+        args_str += f'--out {args.out_file.name} '
+        args_str += f'{args.netlist.name}'
+        comments += '// invoked with command: ' + args_str + '\n'
+    else:
+        args = subprocess.list2cmdline(sys.argv[:])
+        comments += '// invoked with command: ' + args + '\n'
     prefix = f'const auto S_matrix[{num_ports}][{num_ports}] = {{'
     empty_prefix = ' ' * len(prefix)
     
@@ -23,6 +34,8 @@ def print_matrix(M, out_file, num_ports):
         count += 1
 
     if out_file is not None:
+        if adapt_expr is not None:
+            M_strs += f'\n\n{str(adapt_expr)}'
         out_file.write(M_strs)
     else:
         print('')

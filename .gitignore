@@ -3,3 +3,5 @@ scratch
 *.DS_Store
 testing*
 
+web/uploads/*
+!web/uploads/.touch

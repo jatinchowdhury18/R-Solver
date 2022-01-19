@@ -16,7 +16,7 @@ def print_matrix(M, out_file, num_ports, adapt_expr, args, custom_args):
     else:
         args = subprocess.list2cmdline(sys.argv[:])
         comments += '// invoked with command: ' + args + '\n'
-    prefix = 'const auto S_matrix[' + str(num_ports) + '][' + str(num_ports) + '] = {{'
+    prefix = 'const auto S_matrix[' + str(num_ports) + '][' + str(num_ports) + '] = {'
     empty_prefix = ' ' * len(prefix)
     
     M_strs = M.str(rep_mapping=lambda a: str(a) + ',')

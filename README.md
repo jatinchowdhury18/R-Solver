@@ -23,3 +23,11 @@ example netlists provided in the `netlists/` directory.
 One important thing to note, is that all resistors must
 be given a 2-character label, e.g. 'Ra'. Remember that
 voltage sources are defined with the "positive" node first.
+
+## Web Interface
+There is a web interface for this Python script available at (URL).
+
+To run the web server locally, run:
+```bash
+/usr/bin/env sage -python web/r_solver_web.py
+```

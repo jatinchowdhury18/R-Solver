@@ -3,18 +3,31 @@
 <body>
     <h1>Wave Digital Filter R-Type Solver</h1>
     <p>
-        Other links:
+        This is a simple web app to derive an R-Type scattering
+        matrix to be used in a Wave Digital Filter circuit model.
+    </p>
+    <p>
+        To use it, upload a netlist for the R-Type adapter that you would
+        like to solve.
+    </p>
+    <p>
+        Then choose a datum node (default to 0), and a node
+        to adapt (default to -1/unadapted), and click solve to derive the
+        scattering matrix.
+    </p>
+    <p>       
+        For more information, visit the following GitHub link:
         <a href="https://github.com/jatinchowdhury18/R-Solver">GitHub</a><br>
     </p>
     <h2>Upload a netlist to solve:</h2>
-    <form action="/upload_netlist" method="POST" enctype="multipart/form-data">
+    <form action="/rsolver/upload_netlist" method="POST" enctype="multipart/form-data">
         <input type="file" name="file"/>
         <input type="submit" value="Upload"/>
     </form>
     <br></br>
     <h2>Select parameters:</h2>
     <p>Netlist file: {{ netlist_file }}</p>
-    <form action="/solve" method="POST" enctype="multipart/form-data">
+    <form action="/rsolver/solve" method="POST" enctype="multipart/form-data">
         <label>Datum Node:</label>
         <input name="datum", value="0">
         <br></br>
@@ -26,7 +39,7 @@
     <br></br>
     <h2>Download scattering matrix:</h2>
     <p>Scattering Matrix file: {{ scatt_file }}</p>
-    <form action="/download">
+    <form action="/rsolver/download">
         <input type="submit" value="Download"/>
     </form>
 </body>

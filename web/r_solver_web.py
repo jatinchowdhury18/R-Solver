@@ -13,11 +13,11 @@ app.config['UPLOAD_FOLDER'] = app.root_path + '/uploads/'
 app.config['netlist_file'] = None
 app.config['scatt_file'] = None
 
-@app.route('/')
+@app.route('/rsolver')
 def my_form():
     return render_template("r_solver.html")
 
-@app.route('/upload_netlist', methods=['POST'])
+@app.route('/rsolver/upload_netlist', methods=['POST'])
 def do_post():
     try:
         netlist_file = request.files['file']
@@ -30,7 +30,7 @@ def do_post():
     
     return render_template("r_solver.html")
 
-@app.route('/solve', methods=['POST'])
+@app.route('/rsolver/solve', methods=['POST'])
 def do_solve():
     netlist = app.config['netlist_file']
     if netlist is None:
@@ -56,10 +56,10 @@ def do_solve():
                            netlist_file=app.config['netlist_file'].filename,
                            scatt_file=app.config['scatt_file'])
 
-@app.route('/download')
+@app.route('/rsolver/download')
 def do_get():
     return send_from_directory(app.config['UPLOAD_FOLDER'],
         secure_filename(app.config['scatt_file']), as_attachment=True)
 
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(port=220, ssl_context='adhoc', debug=False)

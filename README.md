@@ -25,7 +25,7 @@ be given a 2-character label, e.g. 'Ra'. Remember that
 voltage sources are defined with the "positive" node first.
 
 ## Web Interface
-There is a web interface for this Python script available at (URL).
+There is a web interface for this Python script available [online](https://chowdsp.com/rsolver).
 
 To run the web server locally, run:
 ```bash

@@ -1,4 +1,5 @@
 __pycache__
+*.pyc
 scratch
 *.DS_Store
 testing*

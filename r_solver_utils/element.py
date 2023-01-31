@@ -1,4 +1,5 @@
-from collections import namedtuple, Mapping
+from collections.abc import Mapping
+from collections import namedtuple
 
 def namedtuple_with_defaults(typename, field_names, default_values=()):
     T = namedtuple(typename, field_names)

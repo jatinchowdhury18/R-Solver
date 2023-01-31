@@ -1,0 +1,16 @@
+Va 1 6
+Vb 4 7
+Vc 3 8
+Vd 4 9
+Ve 2 10
+Vf 2 11
+Vg 4 12
+Vh 5 13
+Ra 4 6
+Rb 3 7
+Rc 5 8
+Rd 2 9
+Re 3 10
+Rf 1 11
+Rg 5 12
+Rh 1 13
